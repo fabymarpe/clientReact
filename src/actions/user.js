@@ -2,7 +2,6 @@
  * Created by fabymarpe on 7/27/18.
  */
 import { apiComunication } from '../services/api';
-import { history } from '../helpers/history';
 
 export const userActions = {
     login,
@@ -17,10 +16,10 @@ export const userActions = {
  * @returns {function(*)}
  */
 function login(email, password) {
+    let data = {email: email, password: password};
     return dispatch => {
         dispatch(request({ email }));
-
-        apiComunication.post('login', {email).then((result) => {
+        apiComunication.post('login', data).then((result) => {
             let responseJson = result;
             if (200 === responseJson.code) {
                 let user = responseJson.msg;

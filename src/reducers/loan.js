@@ -1,7 +1,7 @@
 /**
  * Created by fabymarpe on 7/26/18.
  */
-const initialState = {business: {}, owner: {}};
+const initialState = {business: {}, owner: {}, status: ''};
 
 export function loan(state = initialState, action) {
     switch (action.type) {
@@ -12,7 +12,8 @@ export function loan(state = initialState, action) {
             state.owner = action.owner;
             return state;
         case 'requestLoad':
-            return action.loan;
+            console.log(action);
+            return action.data;
         case 'cleanAll':
             return {business: {}, owner: {}};
         default:

@@ -1,12 +1,10 @@
 /**
  * Created by fabymarpe on 7/27/18.
  */
-/**
- * Created by fabymarpe on 7/26/18.
- */
 import React from 'react';
 import { Nav, NavItem, NavLink, Container, Row, Col} from 'reactstrap';
 import { FontAwesomeIcon } from 'react-fontawesome';
+
 import { Business } from './business';
 import { Owner } from './owner';
 import { Decision } from './decision';
@@ -16,7 +14,7 @@ import { Decision } from './decision';
 class Loan extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {tabSelected: 1, business: {}};
+        this.state = {tabSelected: 1};
         this.handleSelect = this.handleSelect.bind(this);
     }
 

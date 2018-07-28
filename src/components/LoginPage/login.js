@@ -1,11 +1,13 @@
 /**
  * Created by fabymarpe on 7/27/18.
  */
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 
+import React from 'react';
+import { connect } from 'react-redux';
+import { Jumbotron, Button, Form, Container, Row, Col, FormGroup } from 'reactstrap';
+import { apiComunication } from '../../services/api';
 import { userActions } from '../../actions/user';
+import { history } from '../../helpers/history';
 
 class Login extends React.Component {
     constructor(props) {
@@ -13,7 +15,6 @@ class Login extends React.Component {
 
         // reset login status
         //this.props.dispatch(userActions.logout());
-
         this.state = {
             email: '',
             password: '',
@@ -21,7 +22,7 @@ class Login extends React.Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
     }
 
     handleChange(e) {
@@ -29,7 +30,7 @@ class Login extends React.Component {
         this.setState({ [name]: value });
     }
 
-    handleSubmit(e) {
+    handleLogin(e) {
         e.preventDefault();
 
         this.setState({submitted: true});
@@ -37,35 +38,49 @@ class Login extends React.Component {
         const {dispatch} = this.props;
         if (email && password) {
             let data = {email: email, password: password};
-            dispatch(userActions.login(email, password));
+            apiComunication.post('login', data).then((result) => {
+                let responseJson = result;
+                if (200 === responseJson.code) {
+                    let user = responseJson.msg;
+                    localStorage.setItem('user', JSON.stringify(user));
+                    console.log(localStorage.getItem('user'));
+                    history.push('/loan');
+                    //dispatch(success(user));
+                } else{
+                    console.log(responseJson.msg);
+                }
+            }, error => {
+                //dispatch(failure(error));
+                //dispatch(alertActions.error(error));
+            });
         }
     }
 
     render() {
         const { email, password, submitted } = this.state;
         return (
-            <div className="col-md-6 col-md-offset-3">
+            <Col md={{ size: 8, offset: 2 }}>
                 <h2>Login</h2>
-                <form name="form" onSubmit={this.handleSubmit}>
-                    <div className={'form-group' + (submitted && !email ? ' has-error' : '')}>
+                <Form name="form" onSubmit={this.handleLogin}>
+                    <FormGroup className={(submitted && !email ? ' has-error' : '')}>
                         <label htmlFor="email">email</label>
                         <input type="email" className="form-control" name="email" value={email} onChange={this.handleChange} />
                         {submitted && !email &&
                         <div className="help-block">Email is required</div>
                         }
-                    </div>
-                    <div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
+                    </FormGroup>
+                    <FormGroup className={(submitted && !password ? ' has-error' : '')}>
                         <label htmlFor="password">Password</label>
                         <input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} />
                         {submitted && !password &&
                         <div className="help-block">Password is required</div>
                         }
-                    </div>
-                    <div className="form-group">
+                    </FormGroup>
+                    <FormGroup>
                         <button className="btn btn-primary">Login</button>
-                    </div>
-                </form>
-            </div>
+                    </FormGroup>
+                </Form>
+            </Col>
         );
     }
 }

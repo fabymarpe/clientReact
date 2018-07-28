@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 class Decision extends React.Component{
     constructor(props){
         super(props);
-        this.state = {};
         this.handleSubmit = this.handleSubmit.bind(this)
     }
 
@@ -20,21 +19,18 @@ class Decision extends React.Component{
         this.props.handleSelect(1);
     }
 
-    static getDerivedStateFromProps(props, state) {
-        return props.loan;
-    }
-
     render(){
+        const { loan, login } = this.props;
+        console.log(login);
         return <div>
             <Container>
                 <Col md="12">
                     <Form onSubmit={this.handleSubmit}>
                         <FormGroup>
                             <Jumbotron>
-                            <h1 className="display-3">Hello, world!</h1>
-                            <p className="lead">This is a simple hero unit, a simple Jumbotron-style component for calling extra attention to featured content or information.</p>
+                            <h1 className="display-3">Hi {login.name}</h1>
+                            <p className="lead">Your loan request has been {loan.status}</p>
                             <hr className="my-2"/>
-                            <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
                         </Jumbotron>
                             <Container>
                                 <Row>
@@ -52,10 +48,10 @@ class Decision extends React.Component{
 }
 
 function mapStateToProps(state){
-    console.log(state);
-    const { loan } = state;
+    const { loan, login } = state;
     return {
-        loan
+        loan,
+        login,
     }
 }
 

@@ -32,7 +32,6 @@ class Business extends React.Component {
         return props.loan.business;
     }
 
-
     render(){
         return <div>
             <Container>

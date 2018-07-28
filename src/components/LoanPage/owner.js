@@ -5,6 +5,7 @@ import React from 'react';
 import { Button, Form, FormGroup, Label, Input, Row, Col, Container} from 'reactstrap';
 import { connect } from 'react-redux';
 
+import { apiComunication } from '../../services/api';
 
 class Owner extends React.Component{
     constructor(props){
@@ -23,10 +24,21 @@ class Owner extends React.Component{
     handleSubmit(event){
         event.preventDefault();
         const { dispatch } = this.props;
-        let loan = {owner: this.state, business: this.props.loan.business};
-        console.log(loan);
-        dispatch({type: 'requestLoad', loan});
-        this.props.handleSelect(3);
+        let data = {owner: this.state, business: this.props.loan.business};
+        apiComunication.post('loan', data).then((result) => {
+            let responseJson = result;
+            if (200 === responseJson.code) {
+                console.log(responseJson.msg);
+                data.status = responseJson.msg;
+                dispatch({type: 'requestLoad', data});
+                this.props.handleSelect(3);
+            } else{
+                console.log(responseJson.msg);
+            }
+        }, error => {
+            //dispatch(failure(error));
+            //dispatch(alertActions.error(error));
+        });
     }
 
     handleBackStep(){

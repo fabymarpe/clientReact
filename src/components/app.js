@@ -1,27 +1,33 @@
 import React from 'react';
 import { Router, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
 import { history } from '../helpers/history';
-import { Jumbotron, Button, Form, Container, Row, Col, FormGroup } from 'reactstrap';
-//import { alertActions } from '../_actions';
-//import { PrivateRoute } from '../_components';
-//import GoogleMap from "../_components/GoogleMap";
+import { Jumbotron, Container, Row, Col } from 'reactstrap';
 import    { Login }   from './LoginPage/login';
+import Loan  from './LoanPage/loan'
 
 class App extends React.Component {
     constructor(props) {
         super(props);
+
+        const { dispatch } = this.props;
+        history.listen((location, action) => {
+            console.log(location)
+            // clear alert on location change
+            //dispatch(alertActions.clear());
+        });
     }
 
     render() {
-        //const { alert } = this.props;
         return (
             <Jumbotron>
                 <Container>
                     <Row>
+                        <Router history={history}>
                             <Col>
-                                <Login/>
+                                <Route exact path="/" component={Login} />
+                                <Route path="/loan" component={Loan} />
                             </Col>
+                        </Router>
                     </Row>
                 </Container>
             </Jumbotron>
