@@ -2,20 +2,24 @@
  * Created by fabymarpe on 7/24/18.
  */
 import React from 'react';
-import { Button, Form, FormGroup, Label, Input, Row, Col, Container} from 'reactstrap';
 import { connect } from 'react-redux';
+import { Button, Form, FormGroup, Label, Input, Row, Col} from 'reactstrap';
+import { alert } from "../../actions/alert";
 
 
 class Business extends React.Component {
     constructor(props){
         super(props);
-        this.state = {};
+        if (this.props.business)
+            this.state = this.props.business;
+        else
+            this.state = {taxID: '', businessName: '', businessAddress: '',
+                city: '', state: '', postalCode: '', requestedAmount: ''};
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange(e) {
-
         const { name, value } = e.target;
         this.setState({ [name]: value });
     }
@@ -23,19 +27,29 @@ class Business extends React.Component {
     handleSubmit(event){
         event.preventDefault();
         const { dispatch } = this.props;
-        let business = this.state;
-        dispatch({type: 'saveBusinessData', business});
-        this.props.handleSelect(2);
-    }
-
-    static getDerivedStateFromProps(props, state) {
-        return props.loan.business;
+        const {taxID, businessName, businessAddress, city, state, postalCode, requestedAmount} = this.state;
+        if (taxID && businessName && businessAddress && city && state && postalCode && requestedAmount) {
+            this.props.handleGoToStep(2, this.state);
+            dispatch(alert.clear())
+        }
+        else {
+            dispatch(alert.error('All fields are required.'))
+        }
     }
 
     render(){
-        return <div>
-            <Container>
-                <Col md="12">
+        const { alert } = this.props;
+
+        return <Col md="12">
+                    {alert.message &&
+                    <FormGroup>
+                        <Row>
+                            <Col md={12}>
+                                <h4 className="text-danger">{alert.message}</h4>
+                            </Col>
+                        </Row>
+                    </FormGroup>
+                    }
                     <Form onSubmit={this.handleSubmit}>
                         <FormGroup>
                             <Row>
@@ -123,17 +137,15 @@ class Business extends React.Component {
                         </FormGroup>
                     </Form>
                 </Col>
-            </Container>
-        </div>
     }
 }
 
 function mapStateToProps(state) {
-    const { loan } = state;
+    const { alert } = state;
     return {
-        loan
-    }
+        alert
+    };
 }
 
 const connectedBusiness = connect(mapStateToProps)(Business);
-export { connectedBusiness as Business };
+export { connectedBusiness as Business};

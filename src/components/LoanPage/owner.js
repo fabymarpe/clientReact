@@ -2,15 +2,17 @@
  * Created by fabymarpe on 7/24/18.
  */
 import React from 'react';
-import { Button, Form, FormGroup, Label, Input, Row, Col, Container} from 'reactstrap';
 import { connect } from 'react-redux';
-
-import { apiComunication } from '../../services/api';
+import { Button, Form, FormGroup, Label, Input, Row, Col, Container} from 'reactstrap';
+import {alert} from "../../actions/alert";
 
 class Owner extends React.Component{
     constructor(props){
         super(props);
-        this.state = {};
+        if(this.props.owner)
+            this.state = this.props.owner;
+        else
+            this.state = {socSecNumber: '', name: '', email: '', address: '', city: '', state: '', postalCode: ''};
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleBackStep = this.handleBackStep.bind(this);
@@ -24,38 +26,34 @@ class Owner extends React.Component{
     handleSubmit(event){
         event.preventDefault();
         const { dispatch } = this.props;
-        let data = {owner: this.state, business: this.props.loan.business};
-        apiComunication.post('loan', data).then((result) => {
-            let responseJson = result;
-            if (200 === responseJson.code) {
-                console.log(responseJson.msg);
-                data.status = responseJson.msg;
-                dispatch({type: 'requestLoad', data});
-                this.props.handleSelect(3);
-            } else{
-                console.log(responseJson.msg);
-            }
-        }, error => {
-            //dispatch(failure(error));
-            //dispatch(alertActions.error(error));
-        });
+        const {socSecNumber, name, email, address, city, state, postalCode} = this.state;
+        if(socSecNumber && name && email && address && city && state && postalCode) {
+            this.props.handleGoToStep(3, this.state);
+            dispatch(alert.clear())
+        } else{
+            dispatch(alert.error('All fields are required.'))
+        }
     }
 
     handleBackStep(){
+        event.preventDefault();
         const { dispatch } = this.props;
-        let owner = this.state;
-        dispatch({type: 'saveOwnerData', owner});
-        this.props.handleSelect(1);
+        dispatch(alert.clear())
+        this.props.handleGoToStep(1, this.state);
     }
 
-    static getDerivedStateFromProps(props, state) {
-        return props.loan.owner;
-}
-
     render() {
-        return <div>
-            <Container>
-                <Col md="12">
+        const { alert } = this.props;
+        return <Col md="12">
+            {alert.message &&
+            <FormGroup>
+                <Row>
+                    <Col md={12}>
+                        <h4 className="text-danger">{alert.message}</h4>
+                    </Col>
+                </Row>
+            </FormGroup>
+            }
                     <Form onSubmit={this.handleSubmit}>
                         <FormGroup>
                             <Row>
@@ -144,17 +142,15 @@ class Owner extends React.Component{
                         </FormGroup>
                     </Form>
                 </Col>
-            </Container>
-        </div>
     }
 }
 
-function mapStateToProps(state){
-    const { loan } = state;
+function mapStateToProps(state) {
+    const { alert } = state;
     return {
-        loan
-    }
+        alert
+    };
 }
 
 const connectedOwner = connect(mapStateToProps)(Owner);
-export { connectedOwner as Owner }
+export { connectedOwner as Owner};

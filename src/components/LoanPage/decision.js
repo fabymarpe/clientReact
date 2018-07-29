@@ -14,24 +14,23 @@ class Decision extends React.Component{
 
     handleSubmit(event){
         event.preventDefault();
-        const { dispatch } = this.props;
-        dispatch({type: 'cleanAll'});
-        this.props.handleSelect(1);
+        this.props.handleGoToStep(1);
     }
 
     render(){
-        const { loan, login } = this.props;
-        console.log(login);
-        return <div>
-            <Container>
-                <Col md="12">
+        const { user, loan } = this.props;
+        return <Col md="12">
                     <Form onSubmit={this.handleSubmit}>
                         <FormGroup>
                             <Jumbotron>
-                            <h1 className="display-3">Hi {login.name}</h1>
-                            <p className="lead">Your loan request has been {loan.status}</p>
+                            <h1 className="display-3">Hi {user.name}!</h1>
+                            <p className="lead">
+                                Your loan request by
+                                <strong> { loan.business.requestedAmount  }</strong> has been
+                                <strong> { loan.status }</strong>
+                            </p>
                             <hr className="my-2"/>
-                        </Jumbotron>
+                            </Jumbotron>
                             <Container>
                                 <Row>
                                     <Col>
@@ -42,18 +41,7 @@ class Decision extends React.Component{
                         </FormGroup>
                     </Form>
                 </Col>
-            </Container>
-        </div>
     }
 }
 
-function mapStateToProps(state){
-    const { loan, login } = state;
-    return {
-        loan,
-        login,
-    }
-}
-
-const connectedOwner = connect(mapStateToProps)(Decision);
-export { connectedOwner as Decision }
+export default Decision;

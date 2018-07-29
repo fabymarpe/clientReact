@@ -2,13 +2,13 @@
  * Created by fabymarpe on 7/27/18.
  */
 export const apiComunication = {
-    post,
+    post
 };
 
-const baseURL = 'http://localhost:8888/';
+const baseURL = 'https://tornadoapi.herokuapp.com/';
+//const baseURL = 'http://localhost:5000/';
 
 function post(type, data) {
-    console.log(baseURL);
     return new Promise((resolve, reject) =>{
         fetch(baseURL+type, {
             method: 'POST',

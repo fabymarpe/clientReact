@@ -2,12 +2,12 @@
  * Created by fabymarpe on 7/26/18.
  */
 import { combineReducers } from 'redux';
-import  { loan } from './loan';
 import { login } from './login';
+import { alert} from "./alert";
 
 const rootReducer = combineReducers({
     login,
-    loan,
+    alert
 });
 
 export default rootReducer;

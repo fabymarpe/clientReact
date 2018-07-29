@@ -4,10 +4,8 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { Jumbotron, Button, Form, Container, Row, Col, FormGroup } from 'reactstrap';
-import { apiComunication } from '../../services/api';
+import { Jumbotron, Button, Form, Row, Col, FormGroup } from 'reactstrap';
 import { userActions } from '../../actions/user';
-import { history } from '../../helpers/history';
 
 class Login extends React.Component {
     constructor(props) {
@@ -32,64 +30,65 @@ class Login extends React.Component {
 
     handleLogin(e) {
         e.preventDefault();
-
         this.setState({submitted: true});
         const {email, password} = this.state;
         const {dispatch} = this.props;
         if (email && password) {
-            let data = {email: email, password: password};
-            apiComunication.post('login', data).then((result) => {
-                let responseJson = result;
-                if (200 === responseJson.code) {
-                    let user = responseJson.msg;
-                    localStorage.setItem('user', JSON.stringify(user));
-                    console.log(localStorage.getItem('user'));
-                    history.push('/loan');
-                    //dispatch(success(user));
-                } else{
-                    console.log(responseJson.msg);
-                }
-            }, error => {
-                //dispatch(failure(error));
-                //dispatch(alertActions.error(error));
-            });
+            dispatch(userActions.login(email, password));
         }
     }
 
     render() {
         const { email, password, submitted } = this.state;
+        const { alert } = this.props;
         return (
-            <Col md={{ size: 8, offset: 2 }}>
-                <h2>Login</h2>
-                <Form name="form" onSubmit={this.handleLogin}>
-                    <FormGroup className={(submitted && !email ? ' has-error' : '')}>
-                        <label htmlFor="email">email</label>
-                        <input type="email" className="form-control" name="email" value={email} onChange={this.handleChange} />
-                        {submitted && !email &&
-                        <div className="help-block">Email is required</div>
-                        }
-                    </FormGroup>
-                    <FormGroup className={(submitted && !password ? ' has-error' : '')}>
-                        <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} />
-                        {submitted && !password &&
-                        <div className="help-block">Password is required</div>
-                        }
-                    </FormGroup>
-                    <FormGroup>
-                        <button className="btn btn-primary">Login</button>
-                    </FormGroup>
-                </Form>
+            <Col className="col-md-6 col-md-offset-3">
+                <Jumbotron>
+                    <h2>Login</h2>
+                    <Form name="form" onSubmit={this.handleLogin}>
+                        <FormGroup className={(submitted && !email ? ' has-error' : '')}>
+                            <Row>
+                                <Col>
+                                    <label htmlFor="email">email</label>
+                                </Col>
+                                <Col>
+                                    <input type="email" className="form-control" name="email" value={email} onChange={this.handleChange} />
+                                    {submitted && !email &&
+                                    <span className="text-danger">Email is required.</span>
+                                    }
+                                </Col>
+                            </Row>
+                        </FormGroup>
+                        <FormGroup className={(submitted && !password ? ' has-error' : '')}>
+                            <Row>
+                                <Col>
+                                    <label htmlFor="password">Password</label>
+                                    <input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} />
+                                    {submitted && !password &&
+                                    <span className="text-danger">Password is required.</span>
+                                    }
+                                </Col>
+                                {alert.message &&
+                                <Col>
+                                    <span className={alert.type}>{alert.message}</span>
+                                </Col>
+                                }
+                            </Row>
+                        </FormGroup>
+                        <FormGroup>
+                            <Button color="primary">Login</Button>
+                        </FormGroup>
+                    </Form>
+                </Jumbotron>
             </Col>
         );
     }
 }
 
 function mapStateToProps(state) {
-    state.service = {};
-    const { loggingIn } = state.login;
+    const { alert } = state;
     return {
-        loggingIn
+        alert
     };
 }
 
