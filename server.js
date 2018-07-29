@@ -1,14 +1,11 @@
-var express = required('express');
-
-const port = process.env.PORT || 5000;
+import  express  from 'express';
 const app = express();
 
-// this is to serve the frontend part
-app.use(express.static('build/'));
+// Since the root/src dir contains our index.html
+app.use(express.static(__dirname + '/src/'));
 
-// your backend routes here
-app.get('/api/xyz', (req, res) => {});
-
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}!`);
-});
+// Heroku bydefault set an ENV variable called PORT=443
+//  so that you can access your site with https default port.
+// Falback port will be 8080; basically for pre-production test in localhost
+// You will use $ npm run prod for this
+app.listen(process.env.PORT || 8080);
