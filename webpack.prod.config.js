@@ -18,7 +18,7 @@ module.exports = {
     // Production details
     output: {
         // When compiled for production, output file location
-        path: './src',
+        path: __dirname,
         publicPath: '/',
         filename: 'bundle.js' // Its convention to use this name
     },
