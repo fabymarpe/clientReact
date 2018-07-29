@@ -1,25 +1,19 @@
-# ReduxSimpleStarter
+# Redux Simple Client to Know the response to a request loan
 
-Interested in learning [Redux](https://www.udemy.com/react-redux/)?
+# Requirements
+Have installed node.js
 
-### Getting Started
+# How to install
+1. Create project folder on local pc
+2. From the project folder to clone the project 'git clone https://github.com/fabymarpe/clientReact.git'
+3. Go to App folder and run 'npm install' command
 
-There are two methods for getting started with this repo.
 
-#### Familiar with Git?
-Checkout this repo, install dependencies, then start the gulp process with the following:
+# How to run
+1. Go to app folder and run 'npm star' command
+2. Login whit the follow data:
 
-```
-> git clone https://github.com/StephenGrider/ReduxSimpleStarter.git
-> cd ReduxSimpleStarter
-> npm install
-> npm start
-```
+email: no-email@no-email.com
+password: 12345
 
-#### Not Familiar with Git?
-Click [here](https://github.com/StephenGrider/ReactStarter/releases) then download the .zip file.  Extract the contents of the zip file, then open your terminal, change to the project directory, and:
-
-```
-> npm install
-> npm start
-```
+3. Go through each step until finally the app tell you the state your request loan. (All fields are required).
