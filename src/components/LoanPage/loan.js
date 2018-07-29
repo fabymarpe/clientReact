@@ -26,18 +26,11 @@ class Loan extends React.Component {
         let loan = this.state.loan;
         switch(tabSelected){
             case 1:
-                if(data) {
+                if(data)
                     loan.owner = data;
-                    this.setState({loan: loan});
-                }
-                else {
-                    let loan = {business: null, owner: null, status: ''};
-                    this.setState({
-                        tabSelected: 1,
-                        loan: loan,
-                        login: this.state.user
-                    });
-                }
+                else
+                    loan = {business: null, owner: null, status: ''};
+                this.setState({loan: loan});
                 break;
             case 2:
                 loan.business = data;

@@ -34,7 +34,7 @@ class Decision extends React.Component{
                             <Container>
                                 <Row>
                                     <Col>
-                                        <Button color="primary" type="submit">Clean</Button>
+                                        <Button color="primary" type="submit">Accept</Button>
                                     </Col>
                                 </Row>
                             </Container>

@@ -28,6 +28,7 @@ function login(email, password) {
                 localStorage.setItem('user', JSON.stringify(user));
                 history.push('/loan');
                 dispatch(success(user));
+                dispatch(alert.clear());
             } else {
                 dispatch(alert.error(responseJson.msg));
             }
