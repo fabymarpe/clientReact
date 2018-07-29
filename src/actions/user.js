@@ -57,6 +57,7 @@ function logout() {
                 localStorage.removeItem('user');
                 history.push('/');
                 dispatch({ type: 'USERS_LOGOUT' });
+                dispatch(alert.clear());
             } else {
                 dispatch(alert.error(responseJson.msg));
             }
