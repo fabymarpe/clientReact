@@ -1,4 +1,4 @@
-# Redux Simple Client to Know the response to a request loan
+# Redux Simple Client to know the response to a request loan
 
 # Requirements
 Have installed node.js
