@@ -36,9 +36,8 @@ class Owner extends React.Component{
     }
 
     handleBackStep(){
-        event.preventDefault();
         const { dispatch } = this.props;
-        dispatch(alert.clear())
+        dispatch(alert.clear());
         this.props.handleGoToStep(1, this.state);
     }
 
